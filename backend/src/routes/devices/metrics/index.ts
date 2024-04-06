@@ -1,6 +1,5 @@
-
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
-import { BodySchema } from "./types";
+import { HubBodySchema } from "./types";
 import { Timestamp } from "firebase-admin/firestore";
 import { DeviceLog } from "types";
 
@@ -9,7 +8,7 @@ const main: FastifyPluginAsyncTypebox = async (app, options): Promise<void> => {
     "/",
     {
       schema: {
-        body: BodySchema,
+        body: HubBodySchema,
       },
     },
     async (req, res): Promise<void> => {
@@ -20,7 +19,11 @@ const main: FastifyPluginAsyncTypebox = async (app, options): Promise<void> => {
 
       const deviceId = body.deviceId;
 
-      await app.db.collection("Devices").doc(deviceId).collection("Series").add(data);
+      await app.db
+        .collection("Devices")
+        .doc(deviceId)
+        .collection("Series")
+        .add(data);
     }
   );
 };

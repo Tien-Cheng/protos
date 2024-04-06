@@ -1,10 +1,14 @@
 import { Type } from "@sinclair/typebox";
 import { DeviceType } from "../../../types";
 
-export const BodySchema = Type.Object({
+export const HubBodySchema = Type.Object({
   deviceId: Type.String(),
-  brand: Type.Enum(DeviceType),
+  type: Type.String(),
   startTime: Type.Date(),
-  values: Type.Record(Type.String(), Type.Any())
+  values: Type.Record(Type.String(), Type.Any()),
 });
 
+export const PollBodySchema = Type.Object({
+  deviceId: Type.String(),
+  brand: Type.Enum(DeviceType),
+})
