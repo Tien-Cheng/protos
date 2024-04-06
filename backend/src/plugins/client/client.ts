@@ -1,5 +1,10 @@
 import plugin from "fastify-plugin";
-import { DeviceBrand, DeviceCandidate, DeviceType } from "../../types";
+import {
+  DeviceBrand,
+  DeviceCandidate,
+  DeviceLog,
+  DeviceType,
+} from "../../types";
 import { DeviceAPIProvider } from "./types";
 import { TPLinkProvider } from "./providers/tplink";
 import { FastifyPluginAsync } from "fastify";
@@ -13,6 +18,12 @@ declare module "fastify" {
         port: number,
         brand: DeviceBrand
       ) => Promise<DeviceCandidate>;
+      getData: (
+        host: string,
+        port: number,
+        brand: DeviceBrand,
+        deviceType: DeviceType
+      ) => Promise<DeviceLog | null>;
     };
   }
 }
@@ -33,26 +44,30 @@ export default plugin<FastifyPluginAsync>(async (app): Promise<void> => {
     return allDevices;
   };
 
-  const connect = async (
-    host: string,
-    port: number,
-    brand: DeviceBrand
-  ) => {
-    const device = await providers[brand].connect(host, port)
+  const connect = async (host: string, port: number, brand: DeviceBrand) => {
+    const device = await providers[brand].connect(host, port);
     return device;
   };
 
-  const getData = async(
+  const getData = async (
     host: string,
     port: number,
     brand: DeviceBrand,
     deviceType: DeviceType
   ) => {
+    if (deviceType == DeviceType.SmartHub) {
+      return null;
+    }
+    const data = await providers[brand].getData(
+      host, port, deviceType
+    );
 
-  }
+    return data;
+  };
 
   app.decorate("deviceClient", {
     scan,
     connect,
+    getData
   });
 });

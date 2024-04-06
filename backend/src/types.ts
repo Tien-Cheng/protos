@@ -27,7 +27,7 @@ export interface Device extends DeviceCandidate {
 
 export interface DeviceLog {
   deviceId: string;
-  logType: string;
-  data: Record<string, any>;
-  created: Timestamp;
+  type: string;
+  values: Record<string, any>;
+  startTime: Timestamp;
 }

@@ -1,4 +1,4 @@
-import { DeviceCandidate } from "../../types";
+import { DeviceCandidate, DeviceLog, DeviceType } from "../../types";
 
 export interface DeviceAPIProvider {
   scan: () => Promise<DeviceCandidate[]>;
@@ -6,4 +6,9 @@ export interface DeviceAPIProvider {
     host: string,
     port: number
   ) => Promise<DeviceCandidate>;
+  getData: (
+    host: string,
+    port: number,
+    deviceType: DeviceType,
+  ) => Promise<DeviceLog | null>;
 }
