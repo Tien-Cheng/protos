@@ -11,11 +11,15 @@ declare module "fastify" {
 
 export default plugin<FastifyPluginAsync>(async (app): Promise<void> => {
   const credentials = require("../firebaseKey.json");
+
   initializeApp({
     credential: cert(credentials),
   });
 
   const db = getFirestore();
+  db.settings({
+    ignoreUndefinedProperties: true
+  })
 
   app.decorate("db", db);
 });
