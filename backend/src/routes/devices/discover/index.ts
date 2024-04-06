@@ -11,7 +11,7 @@ const main : FastifyPluginAsyncTypebox = async (app, options): Promise<void> => 
        // Return list of devices along with connection settings
        return res.send({
             "message" : "TBC",
-            "devices" : ["test"]
+            "devices" : [""]
        }) 
     }
     )
