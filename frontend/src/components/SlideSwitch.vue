@@ -10,13 +10,13 @@ defineProps<{
 }>();
 
 const emits = defineEmits<{
-  (e: "click", newValue: boolean): void,
+  (e: "update", newValue: boolean): void,
 }>();
 
 onMounted(() => {
   // input.value.checked = props.value;
   input.value.addEventListener("change", () => {
-    emits("click", input.value.checked);
+    emits("update", input.value.checked);
   });
 });
 
@@ -48,7 +48,7 @@ input {
 }
 
 .switch-main:has(input:checked) {
-  background: #FFFFFF40;
+  background: #FFFFFFb4;
 
   .knob {
     background: var(--primary);
@@ -66,7 +66,7 @@ input {
   margin: 5px;
   border-radius: 20px;
   box-shadow: var(--secondary-shadow);
-  background: #CFD2D5;
+  background: var(--background);
   transition: all ease .2s;
 }
 

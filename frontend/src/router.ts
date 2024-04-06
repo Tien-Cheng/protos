@@ -11,6 +11,7 @@ export enum Routes {
   ROOMS = "ROOMS",
   DEVICE = "DEVICE",
   REWARDS = "REWARDS",
+  CHALLENGES = "CHALLENGES",
   PROFILE = "PROFILE"
 }
 
@@ -41,6 +42,11 @@ const router = createRouter({
       path: "/rewards",
       name: Routes.REWARDS,
       component: () => import("./pages/Rewards.vue")
+    },
+    {
+      path: "/challenges",
+      name: Routes.CHALLENGES,
+      component: () => import("./pages/Challenges.vue")
     },
     {
       path: "/profile",

@@ -34,3 +34,11 @@ export interface Environment {
 export interface Weather extends Environment {
   state: string;
 }
+
+export interface Voucher {
+  voucherId: string,
+  voucherName: string,
+  voucherDescription?: string,
+  imageURL?: string,
+  requiredPoints: number,
+}
