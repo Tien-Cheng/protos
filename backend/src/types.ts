@@ -1,6 +1,7 @@
 export enum DeviceType {
   SmartPlug = "smart-plug",
   SmartHub = "smart-hub"
+  SmartBulb = "smart-bulb"
 }
 
 export enum DeviceBrand {
