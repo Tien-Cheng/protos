@@ -1,10 +1,17 @@
-enum DeviceType {
+export enum DeviceType {
   SmartPlug = "smart-plug",
   SmartHub = "smart-hub",
 }
 
-enum DeviceBrand {
+export enum DeviceBrand {
   tpLink = "tplink"
+}
+
+export enum DeviceStatus {
+  ACTIVE = "ACTIVE",
+  INACTIVE = "INACTIVE",
+  DISCONNECTED = "DISCONNECTED",
+  ERROR = "ERROR",
 }
 
 export interface Device {
@@ -17,6 +24,7 @@ export interface Device {
   created: string;
   isFavourite: boolean;
   roomId: string;
+  state: DeviceStatus;
 }
 
 export interface Room {

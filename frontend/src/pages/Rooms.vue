@@ -9,6 +9,9 @@ import { Environment, Weather } from "../models";
 
 import AppBar from '../components/AppBar.vue';
 import SectionCard from "../components/SectionCard.vue";
+import DeviceCard from '../components/DeviceCard.vue';
+
+
 
 const roomsStore = useRoomsStore();
 const devicesStore = useDevicesStore();
@@ -121,8 +124,8 @@ main();
       <section class="devices-view">
         <h2>Devices</h2>
 
-        <div>
-          {{ devices }}
+        <div class="device-wrap">
+          <DeviceCard v-for="device in devices" :key="device.deviceId" :name="device.deviceName" :type="device.deviceType as any" :status="device.state"></DeviceCard>
         </div>
       </section> 
     </div>
@@ -167,7 +170,7 @@ main();
   padding-top: 55px;
 }
 
-div.section-card {
+.environment-view div.section-card {
   background: linear-gradient(to right, rgb(86, 204, 242), rgb(47, 128, 237));
 }
 
@@ -244,5 +247,16 @@ div.section-card {
 
 .chip-array .chip.chip-selected {
   background-color: var(--primary);
+}
+
+.device-wrap {
+  display: grid;
+  width: calc(100% + 20px);
+  grid-template-columns: repeat(2, 1fr);
+  margin: -10px;
+}
+
+.device-wrap>div.device-card {
+  margin: 10px;
 }
 </style>
