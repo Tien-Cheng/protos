@@ -1,4 +1,4 @@
-import {  DeviceCandidate } from "types";
+import { DeviceCandidate } from "../../types";
 
 export interface DeviceAPIProvider {
   scan: () => Promise<DeviceCandidate[]>;

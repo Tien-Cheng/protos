@@ -13,9 +13,9 @@ server.get("/", async (_, res) => {
 });
 
 // TODO: Register routes
-// server.register(autoload, {
-//     dir : path.join(__dirname, "plugins")
-// })
+server.register(autoload, {
+    dir : path.join(__dirname, "plugins")
+})
 
 server.register(autoload, {
     dir : path.join(__dirname, "routes"),

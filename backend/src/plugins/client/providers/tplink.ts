@@ -2,7 +2,7 @@
 import { setTimeout } from "timers/promises";
 import { Client } from "tplink-smarthome-api";
 import { DeviceAPIProvider } from "../types";
-import { Device, DeviceBrand, DeviceCandidate, DeviceType } from "types";
+import { DeviceBrand, DeviceCandidate, DeviceType } from "../../../types";
 
 export class TPLinkProvider implements DeviceAPIProvider {
   client: Client;
