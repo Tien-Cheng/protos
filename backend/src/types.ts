@@ -1,3 +1,5 @@
+import { Timestamp } from "firebase-admin/firestore";
+
 export enum DeviceType {
   SmartPlug = "smart-plug",
   SmartHub = "smart-hub",
@@ -17,7 +19,7 @@ export interface DeviceCandidate {
 }
 
 export interface Device extends DeviceCandidate {
-  created: string;
+  created: Timestamp;
   isFavourite: boolean;
   roomId: string;
   deviceThumbnail?: string;
