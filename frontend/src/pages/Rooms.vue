@@ -105,10 +105,14 @@ main();
 
           <div class="temperature-section inside">
             <h4>Inside</h4>
-            <div>
+            <div v-if="!!state.insideEnvironment">
               <p class="temperature">{{ state.insideEnvironment?.temperature }}°C</p>
 
               <p class="humidity">{{ state.insideEnvironment?.humidity }}% <br> Humidity</p>
+            </div>
+            <div class="no-data" v-else>
+              <p>No data.</p>
+              <p>Add a hub to the room.</p>
             </div>
           </div>
         </SectionCard>
@@ -212,6 +216,14 @@ div.section-card {
 .environment-view .temperature-section p {
   color: white;
   margin: 0px 0px 13px 0px;
+}
+
+.environment-view .temperature-section.inside .no-data {
+  width: 89px;
+}
+
+.environment-view .temperature-section.inside .no-data p {
+  margin: 0px;
 }
 
 .environment-view p.temperature {

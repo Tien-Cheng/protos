@@ -15,6 +15,9 @@ export const useDevicesStore = defineStore("devices", {
   getters: {
     devicesByRoomId: (state) => (roomId: string) => {
       return Object.values(state.devices).filter((device) => device.roomId === roomId);
+    },
+    deviceById: (state) => (deviceId: string) => {
+      return state.devices[deviceId];
     }
   },
   actions: {
