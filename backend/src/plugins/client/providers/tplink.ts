@@ -38,9 +38,9 @@ export class TPLinkProvider implements DeviceAPIProvider {
     return devices;
   }
 
-  async connect(host: string) {
+  async connect(host: string, port: number) {
     let device = await this.client.getDevice({
-      host,
+      host, port
     });
 
     let deviceDetails: DeviceCandidate = {

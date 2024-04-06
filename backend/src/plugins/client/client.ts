@@ -8,7 +8,11 @@ declare module "fastify" {
   interface FastifyInstance {
     deviceClient: {
       scan: () => Promise<DeviceCandidate[]>;
-      connect: () => Promise<DeviceCandidate>;
+      connect: (
+        host: string,
+        port: number,
+        brand: DeviceBrand
+      ) => Promise<DeviceCandidate>;
     };
   }
 }
@@ -29,8 +33,13 @@ export default plugin<FastifyPluginAsync>(async (app): Promise<void> => {
     return allDevices;
   };
 
-  const connect = async () => {
-    return {} as DeviceCandidate;
+  const connect = async (
+    host: string,
+    port: number,
+    brand: DeviceBrand
+  ) => {
+    const device = await providers[brand].connect(host, port)
+    return device;
   };
 
   app.decorate("deviceClient", {
