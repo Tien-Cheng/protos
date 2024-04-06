@@ -3,6 +3,7 @@ import { ref } from 'vue';
 import AppBar from '../components/AppBar.vue';
 import SectionCard from '../components/SectionCard.vue';
 import DeviceCard from '../components/DeviceCard.vue';
+import { Routes } from '../router';
 
 const score = ref(250);
 const data = ref({
@@ -19,19 +20,21 @@ const suggestions = ref({
 } as { [key: string]: { description: string, button: string } });
 
 const devices = ref({
-  "Air Conditioner 1": "inactive",
-  "Air Conditioner 2": "inactive",
-  "Air Conditioner 3": "inactive",
-} as { [key: string]: "active" | "inactive" | "disconnected" | "error" });
+  "Air Conditioner 1": { state: "inactive", type: 'smart-plug' },
+  "Air Conditioner 2": { state: "inactive", type: 'smart-meter' },
+  "Air Conditioner 3": { state: "inactive", type: 'smart-plug' },
+} as { [key: string]: { state: "active" | "inactive" | "disconnected" | "error", type: "smart-plug" | "smart-meter" } });
 
 </script>
 
 <template>
   <div class="home-header">
     <img src="../assets/profile_picture.svg">
-    <h2 class="points">
-      <b>{{ score }}</b> points
-    </h2>
+    <router-link :to="{ name: Routes.REWARDS }" class="points-button">
+      <h2 class="points">
+        <b>{{ score }}</b> points
+      </h2>
+    </router-link>
   </div>
   <div class="home-content">
     <h1 class="home-title">
@@ -87,13 +90,13 @@ const devices = ref({
     </SectionCard>
     <h2 class="section-title">Devices</h2>
     <div class="device-wrap">
-      <DeviceCard v-for="(value, key) in devices" :name="key.toString()" :status="value" />
+      <DeviceCard v-for="(value, key) in devices" :name="key.toString()" :status="value.state" :type="value.type" />
     </div>
   </div>
   <AppBar />
 </template>
 
-<style>
+<style scoped>
 .home-content {
   margin: 0 25px;
   padding-bottom: 100px;
@@ -105,7 +108,12 @@ const devices = ref({
   align-items: center;
   padding: 15px;
 
+  .points-button {
+    background: none;
+  }
+
   .points {
+    color: black;
     margin: 0 10px;
   }
 }
@@ -177,7 +185,7 @@ const devices = ref({
 
 .details-button,
 .suggestion-button {
-  height: 36px;
+  height: 32px;
   padding: 2px 20px;
   border-radius: 50px;
 }
@@ -202,7 +210,7 @@ const devices = ref({
   margin: -10px;
 }
 
-.device-wrap > div.device-card {
+.device-wrap>div.device-card {
   margin: 10px;
 }
 </style>

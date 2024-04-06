@@ -15,7 +15,7 @@ import { RouterView } from "vue-router";
   --default-neu: -5px -5px 10px #ffffffc4, 5px 5px 10px #0000001a;
   --secondary-shadow: 0 0 20px #00000026;
   --secondary-neu: -4px -4px 7px #ffffffc4, 4px 4px 7px #0000001a;
-  --icon-neu: drop-shadow(-2px -2px 4px #ffffffc4) drop-shadow(2px 2px 4px #00000026);
+  --icon-neu: drop-shadow(-2px -2px 3px #ffffffc4) drop-shadow(2px 2px 4px #00000026);
   --darkened-icon-neu: drop-shadow(-2px -2px 4px #ffffff70) drop-shadow(2px 2px 4px #00000050);
   --inner-neu: -4px -4px 7px #ffffffc4 inset, 4px 4px 7px #0000001a inset;
 }
