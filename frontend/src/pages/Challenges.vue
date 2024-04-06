@@ -10,19 +10,46 @@ const data = ref({
 
 const challenges = ref([
   {
-    title: "10% off next month’s bills",
-    description: "To be applied before GST tax.\nUsable after 1st May.",
-    points: 100,
+    title: "Weekly Power Saver Goal",
+    description: "Overall unit power usage is below the mean average for your housing type.",
+    points: 300,
+    progress: "52.102 / 93.975 kWh",
   },
   {
-    title: "20% off Air Conditioner charges",
-    description: "To be applied before GST tax.\nApplies to smart devices found in app.",
+    title: "25°C is All You Need",
+    description: "Set your aircon temperature to above 25C when you are using it.",
     points: 100,
+    progress: "Not Started",
   },
+  {
+    title: "Turn Off Light When Not In Use",
+    description: "Turn off the light when no one is around. The challenge is completed when the habit is recognized for 5 consecutive streak.",
+    points: 100,
+    progress: "3/5 Saving Streak",
+  },
+  {
+    title: "Stand Against Standby Power",
+    description: "Turn off device when in standby mode. The challenge is completed when the habit is recognized for 5 consecutive streak.",
+    points: 50,
+    progress: "1/5 Saving Streak",
+  },
+  {
+    title: "Rainy Days, Aircon Free",
+    description: "Do not turn on aircon when it is a rainy day.",
+    points: 50,
+    progress: "Not Started",
+  },
+  {
+    title: "Sunny Days, Dryer Free",
+    description: "Do not use a dryer when it is a sunny day.",
+    points: 50,
+    progress: "Not Started",
+  }
 ] as {
   title: string,
   description: string,
   points: number,
+  progress?: string
 }[]);
 
 </script>
@@ -58,12 +85,12 @@ const challenges = ref([
       </div>
     </SectionCard>
     <h2 class="section-title">Challenges</h2>
-    <SectionCard v-for="value in challenges" class="suggestion-card">
-      <div class="suggestion-content">
-        <h2>{{ value.title }}</h2>
-        <h4 class="suggestion-description">{{ value.description }}</h4>
-        <button type="button" class="suggestion-button">
-          <h3>{{ value.description }}</h3>
+    <SectionCard v-for="value in challenges" class="challenge-card">
+      <div class="card-content">
+        <h2 class="card-title">{{ value.title }}</h2>
+        <h4 class="card-description">{{ value.description }}</h4>
+        <button type="button" class="card-button">
+          <p>{{value.progress === undefined ? "Not Started": value.progress }}</p>
         </button>
       </div>
     </SectionCard>
@@ -120,5 +147,26 @@ const challenges = ref([
     filter: var(--darkened-icon-neu);
   }
 
+}
+
+.challenge-card {
+  padding: 15px 20px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.card-title {
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.card-description {
+  margin-bottom: 4px;
+}
+
+.card-button {
+  border-radius: 25px;
+  padding: 15px;
+  display: flex;
 }
 </style>
