@@ -29,17 +29,6 @@ const main: FastifyPluginAsyncTypebox = async (app, options): Promise<void> => {
 
       await app.db.collection("Devices").doc(device.deviceId).set(dbEntry);
 
-      // // Once added, we need to start collecting data from the device
-      // const queue =
-      //   app.tasks.queues["devices"] ?? app.tasks.createQueue(device.deviceId);
-
-      // // note this is hacky as if the ip address changes
-      // // this will fail
-      // await queue.add(device.deviceId, dbEntry, {
-      //   repeat: {
-      //     every: 5000, // poll every 5 seconds
-      //   },
-      // });
 
       return res.send(dbEntry);
     }

@@ -1,10 +1,13 @@
 import fastify from 'fastify';
 import autoload from '@fastify/autoload';
 import path from 'path';
+import cors from "@fastify/cors";
 
 const server = fastify({
     logger: true
 });
+
+server.register(cors);
 
 server.get("/", async (_, res) => {
     res.send({
