@@ -1,4 +1,3 @@
-// TODO: Use tpli
 import { setTimeout } from "timers/promises";
 import { Client } from "tplink-smarthome-api";
 import { DeviceAPIProvider } from "../types";
