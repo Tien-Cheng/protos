@@ -8,11 +8,11 @@
   </div>
 </template>
 
-<style>
-div.section-card {
+<style scoped>
+.section-card {
   background: var(--background);
   border-radius: 20px;
-  margin: 10px;
+  margin: 10px 0;
   padding: 10px;
   box-shadow: var(--default-neu);
 }

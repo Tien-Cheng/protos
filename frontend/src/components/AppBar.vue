@@ -67,7 +67,7 @@ router.currentRoute;
 }
 
 .nav-bar svg {
-  backdrop-filter: drop-shadow(var(--icon-neu));
+  filter: var(--icon-neu);
 }
 
 .nav-bar svg path {
