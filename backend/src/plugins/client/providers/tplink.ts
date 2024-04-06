@@ -1,7 +1,14 @@
 import { setTimeout } from "timers/promises";
-import { Client } from "tplink-smarthome-api";
+import {
+  AnyDevice,
+  Bulb,
+  Client,
+  Plug,
+  RealtimeNormalized,
+} from "tplink-smarthome-api";
 import { DeviceAPIProvider } from "../types";
 import { DeviceBrand, DeviceCandidate, DeviceType } from "../../../types";
+import { Timestamp } from "firebase-admin/firestore";
 
 export class TPLinkProvider implements DeviceAPIProvider {
   client: Client;
@@ -40,7 +47,8 @@ export class TPLinkProvider implements DeviceAPIProvider {
 
   async connect(host: string, port: number) {
     let device = await this.client.getDevice({
-      host, port
+      host,
+      port,
     });
 
     let deviceDetails: DeviceCandidate = {
@@ -52,5 +60,35 @@ export class TPLinkProvider implements DeviceAPIProvider {
     };
 
     return deviceDetails;
+  }
+
+  async getData(host: string, port: number, deviceType: DeviceType) {
+    const timestamp = Timestamp.now();
+    let data: Record<string, any> = {};
+    let device: Bulb | Plug | AnyDevice;
+    if (deviceType == DeviceType.SmartBulb) {
+      device = this.client.getBulb({
+        host,
+        port,
+      });
+      const light = await device.lighting.getLightState();
+      data["brightness"] = light.brightness;
+      data["colorTemp"] = light.color_temp;
+    } else if (deviceType == DeviceType.SmartPlug) {
+      device = this.client.getPlug({
+        host,
+        port,
+      });
+    } else {
+      throw "Invalid device type";
+    }
+    // Get e meter data
+    const { current, voltage } =
+      (await device.emeter.getRealtime()) as RealtimeNormalized;
+
+    if (current && voltage) {
+      data[current] = current;
+      data[voltage] = voltage;
+    }
   }
 }

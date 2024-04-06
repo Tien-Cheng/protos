@@ -1,5 +1,5 @@
 import plugin from "fastify-plugin";
-import { DeviceBrand, DeviceCandidate } from "../../types";
+import { DeviceBrand, DeviceCandidate, DeviceType } from "../../types";
 import { DeviceAPIProvider } from "./types";
 import { TPLinkProvider } from "./providers/tplink";
 import { FastifyPluginAsync } from "fastify";
@@ -41,6 +41,15 @@ export default plugin<FastifyPluginAsync>(async (app): Promise<void> => {
     const device = await providers[brand].connect(host, port)
     return device;
   };
+
+  const getData = async(
+    host: string,
+    port: number,
+    brand: DeviceBrand,
+    deviceType: DeviceType
+  ) => {
+
+  }
 
   app.decorate("deviceClient", {
     scan,

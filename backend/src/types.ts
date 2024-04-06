@@ -24,3 +24,10 @@ export interface Device extends DeviceCandidate {
   roomId: string;
   deviceThumbnail?: string;
 }
+
+export interface DeviceLog {
+  deviceId: string;
+  logType: string;
+  data: Record<string, any>;
+  created: Timestamp;
+}
