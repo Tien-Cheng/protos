@@ -1,4 +1,6 @@
 import fastify from 'fastify';
+import autoload from '@fastify/autoload';
+import path from 'path';
 
 const server = fastify({
     logger: true
@@ -11,6 +13,15 @@ server.get("/", async (_, res) => {
 });
 
 // TODO: Register routes
+// server.register(autoload, {
+//     dir : path.join(__dirname, "plugins")
+// })
+
+server.register(autoload, {
+    dir : path.join(__dirname, "routes"),
+    routeParams: true,
+    autoHooks: true
+})
 
 server.listen({
     port: 4090,
