@@ -1,8 +1,12 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import SectionCard from '../components/SectionCard.vue';
+
 import { useVouchersStore } from '../stores/rewards';
 import { Voucher } from '../models';
+
+import AppBar from '../components/AppBar.vue';
+import SectionCard from '../components/SectionCard.vue';
+
 
 const vouchersStore = useVouchersStore();
 
@@ -72,6 +76,8 @@ getVouchers();
         </button>
       </div>
     </SectionCard>
+
+    <AppBar></AppBar>
   </div>
 </template>
 

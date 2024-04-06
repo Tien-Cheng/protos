@@ -41,30 +41,6 @@ export const useVouchersStore = defineStore("vouchers", {
       } catch (e) {
         console.error(e);
       }
-    },
-    async addVouchers() {
-
-      const defaults: Voucher[] = [
-        {
-          voucherId: "0.1offnextmonth’sbills",
-          voucherName: "10% off next month’s bills",
-          voucherDescription: "To be applied before GST tax.\nUsable after 1st May.",
-          requiredPoints: 100,
-        },
-        {
-          voucherId: "0.2offAirConditionercharges",
-          voucherName: "20% off Air Conditioner charges",
-          voucherDescription: "To be applied before GST tax.\nApplies to smart devices found in app.",
-          requiredPoints: 150,
-        }
-      ];
-      for (const v of defaults) {
-        try {
-          await setDoc(doc(collection(db, "Vouchers")), v);
-        } catch (error) {
-          console.error(error);
-        }
-      }
-    },
+    }
   }
 });
