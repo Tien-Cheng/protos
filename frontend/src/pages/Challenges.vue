@@ -29,9 +29,9 @@ const challenges = ref([
 
 <template>
   <div class="challenges-content">
-    <!-- <h1 class="challenges-title">
+    <h1 class="challenges-title">
       Challenges
-    </h1> -->
+    </h1>
     <SectionCard id="scoreCard">
       <div class="score-wrap">
         <h3 class="card-title">
