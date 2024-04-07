@@ -34,9 +34,10 @@ function update(value: boolean) {
       </div>
     </RouterLink>
       <div class="bottom-wrap">
-        <SlideSwitch
+        <SlideSwitch v-if="type != DeviceType.SmartHub"
           @update="v => update(v)"
           :value="status == DeviceStatus.ACTIVE" />
+        <div v-else></div>
         <div class="device-icon">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path v-if="type == DeviceType.SmartPlug"
