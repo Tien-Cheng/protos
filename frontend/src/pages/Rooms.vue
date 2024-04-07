@@ -27,6 +27,8 @@ const rooms = computed(() => Object.values(roomsStore.rooms));
 
 const currentRoom = computed(() => rooms.value[state.roomIndex]);
 
+const hub = computed(() => devicesStore.hubDeviceByRoomId(currentRoom.value.roomId));
+
 const devices = computed(() => devicesStore.devicesByRoomId(currentRoom.value.roomId));
 
 
@@ -51,17 +53,15 @@ const main = async () => {
 
   try {
     await devicesStore.getDevicesByRoom(rooms.value[0].roomId);
+
+    if (hub.value == null) {
+      return;
+    }
+    state.insideEnvironment = {
+      temperature: hub.value.temperature,
+      humidity: hub.value.humidity
+    };
   } catch (error) {
-    console.error(error);
-  }
-
-  try {
-    const data = await fetch("https://api.data.gov.sg/v1/environment/air-temperature", {
-      mode: "cors"
-    })
-
-    console.log(await data.json());
-  } catch(error) {
     console.error(error);
   }
 };

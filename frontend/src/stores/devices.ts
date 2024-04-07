@@ -2,14 +2,15 @@ import { defineStore } from "pinia";
 
 import { collection, query, where, getDocs, doc, setDoc } from "firebase/firestore";
 
+
 import { db } from "../firebase";
 
-import { Device, DeviceStatus } from "../models";
+import { Device, DeviceType, HubDevice, DeviceStatus } from "../models";
 
 
 
 export const useDevicesStore = defineStore("devices", {
-  state: (): { devices: { [deviceId: string]: Device } } => ({
+  state: (): { devices: { [deviceId: string]: Device | HubDevice } } => ({
     devices: {}
   }),
   getters: {
@@ -21,6 +22,9 @@ export const useDevicesStore = defineStore("devices", {
     },
     favouriteDevices: (state) => {
       return Object.values(state.devices).filter((device) => device.isFavourite);
+    },
+    hubDeviceByRoomId: (state) => (roomId: string) => {
+      return Object.values(state.devices).find((device) => device.roomId === roomId && device.deviceType === DeviceType.SmartHub) as HubDevice;
     }
   },
   actions: {
@@ -50,6 +54,19 @@ export const useDevicesStore = defineStore("devices", {
         console.error(error);
       }
     },
+    // async getHubDeviceByRoom(roomId: string) {
+    //   try {
+    //     const snap = await getDocs(query(collection(db, "Devices"), and(where("roomId", "==", roomId), where("deviceType", "==", DeviceType.SmartHub))));
+
+    //     snap.forEach((doc) => {
+    //       const device = doc.data() as HubDevice;
+    //       device.deviceId = doc.id;
+    //       this.devices[doc.id] = device;
+    //     });
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // },
     async addDevice() {
       try {
 
