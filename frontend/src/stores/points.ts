@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 
-import { collection, setDoc, doc, getDoc } from "firebase/firestore";
+import { collection, setDoc, doc, getDoc, getDocs } from "firebase/firestore";
 
 import { db } from "../firebase";
 
@@ -13,15 +13,17 @@ export const usePointsStore = defineStore("points", {
   actions: {
     async getPoints() {
       try {
-        const collectionDoc = doc(collection(db, "Points"));
-        const snap = (await getDoc(collectionDoc)), data = snap.data();
-
-        if (data && data["points"]) {
-          this.points = parseInt(data["points"].toString());
-          this.id = collectionDoc.id;
-        } else {
-          await this.setPoints();
-        }
+        const snap = await getDocs(collection(db, "Points"));
+        let points;
+        snap.forEach(snapDoc => {
+          points = snapDoc.data()["points"];
+          if (points) {
+            this.points = parseInt(points.toString());
+            this.id = snapDoc.id;
+          } else {
+            this.setPoints();
+          }
+        });
       } catch (error) {
         console.error(error);
       }

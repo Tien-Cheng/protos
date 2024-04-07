@@ -4,20 +4,22 @@ import AppBar from '../components/AppBar.vue';
 import SectionCard from '../components/SectionCard.vue';
 import DeviceCard from '../components/DeviceCard.vue';
 import { Routes } from '../router';
+import { Suggestion } from '../models';
+import { useSuggestionsStore } from '../stores/suggestions';
+import { useDevicesStore } from '../stores/devices';
+import { usePointsStore } from '../stores/points';
 
-const score = ref(250);
+const suggestionsStore = useSuggestionsStore();
+const pointsStore = usePointsStore();
+
+const points = ref(0);
 const data = ref({
   power: 100,
   cost: 500
 });
 const date = new Date();
 
-const suggestions = ref({
-  "Turn Off Air Conditioner 1": {
-    description: "Decrease brightness of TV Display 2 due to decreased customers",
-    button: "Turn Off"
-  }
-} as { [key: string]: { description: string, button: string } });
+const suggestions = ref({} as { [key: string]: Suggestion });
 
 const devices = ref({
   "Air Conditioner 1": { state: "inactive", type: 'smart-plug' },
@@ -25,6 +27,13 @@ const devices = ref({
   "Air Conditioner 3": { state: "inactive", type: 'smart-plug' },
 } as { [key: string]: { state: "active" | "inactive" | "disconnected" | "error", type: "smart-plug" | "smart-meter" } });
 
+suggestionsStore.getAllSuggestions().then(s => {
+  suggestions.value = { ...s };
+});
+
+pointsStore.getPoints().then(() => {
+  points.value = pointsStore.points;
+})
 </script>
 
 <template>
@@ -32,7 +41,7 @@ const devices = ref({
     <img src="../assets/profile_picture.svg">
     <router-link :to="{ name: Routes.REWARDS }" class="points-button">
       <h2 class="points">
-        <b>{{ score }}</b> points
+        <b>{{ points }}</b> points
       </h2>
     </router-link>
   </div>
@@ -78,13 +87,13 @@ const devices = ref({
       </div>
     </SectionCard>
     <h2 class="section-title">Suggestions</h2>
-    <SectionCard v-for="(value, key) in suggestions" class="suggestion-card">
+    <SectionCard v-for="(suggestion, key) in suggestions" class="suggestion-card">
       <div class="suggestion-icon" />
       <div class="suggestion-content">
-        <h2>{{ key }}</h2>
-        <h4 class="suggestion-description">{{ value.description }}</h4>
+        <h2>{{ suggestion.suggestionName }}</h2>
+        <h4 class="suggestion-description">{{ suggestion.suggestionDescription }}</h4>
         <button type="button" class="suggestion-button">
-          <h3>{{ value.button }}</h3>
+          <h3>Turn Off</h3>
         </button>
       </div>
     </SectionCard>
