@@ -46,9 +46,10 @@ export const useSuggestionsStore = defineStore("suggestions", {
     },
     async removeSuggestion(id: string) {
       try {
-        if (Object.keys(this.suggestions).includes(id))
-          deleteDoc(doc(collection(db, "Vouchers"), id));
-        else
+        if (!!this.suggestions[id]) {
+          deleteDoc(doc(collection(db, "Suggestions"), id));
+          delete this.suggestions[id];
+        } else
           console.error("no suggestion with that id");
       } catch (e) {
         console.error(e);
@@ -56,7 +57,7 @@ export const useSuggestionsStore = defineStore("suggestions", {
     },
     async applySuggestion(id: string) {
       const deviceStore = useDevicesStore();
-      if (!Object.keys(this.suggestions).includes(id))
+      if (!this.suggestions[id])
         return console.error("no suggestion with that id");
 
       const suggestion = this.suggestions[id];

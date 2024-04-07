@@ -26,6 +26,11 @@ const changeState = () => {
 }
 
 
+const applySuggestion = async (suggestionId: string) => {
+  await suggestionsStore.applySuggestion(suggestionId);
+}
+
+
 
 const main = async () => {
   if (device.value == null) {
@@ -76,7 +81,7 @@ main();
       <div class="suggestion-content">
         <h2>{{ suggestion.suggestionName }}</h2>
         <h4 class="suggestion-description">{{ suggestion.suggestionDescription }}</h4>
-        <button type="button" class="suggestion-button">
+        <button type="button" class="suggestion-button"  @click="applySuggestion(suggestion.suggestionId)">
           <h3>Turn Off</h3>
         </button>
       </div>
