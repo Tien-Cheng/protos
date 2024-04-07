@@ -15,17 +15,15 @@ const props = defineProps<{
   status: DeviceStatus,
 }>();
 
-const output = defineModel<string>();
+// const output = defineModel<string>();
 
 const emits = defineEmits<{
   (e: "update", status: DeviceStatus.ACTIVE | DeviceStatus.INACTIVE): void;
 }>();
 
-function update(v: DeviceStatus.ACTIVE | DeviceStatus.INACTIVE) {
-  output.value = v;
-  emits("update", v);
+function update(value: boolean) {
+  emits("update", value ? DeviceStatus.ACTIVE : DeviceStatus.INACTIVE);
 }
-
 </script>
 
 <template>
@@ -37,7 +35,7 @@ function update(v: DeviceStatus.ACTIVE | DeviceStatus.INACTIVE) {
     </RouterLink>
       <div class="bottom-wrap">
         <SlideSwitch
-          @update="v => { if (![DeviceStatus.DISCONNECTED, DeviceStatus.ERROR].includes(status)) update(v ? DeviceStatus.ACTIVE : DeviceStatus.INACTIVE); }"
+          @update="v => update(v)"
           :value="status == DeviceStatus.ACTIVE" />
         <div class="device-icon">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
