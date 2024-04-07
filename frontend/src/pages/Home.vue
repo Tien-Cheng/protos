@@ -57,7 +57,7 @@ const main = async () => {
   }
 
   try {
-    await devicesStore.getDevicesByRoom(rooms.value[0].roomId);
+    await devicesStore.getFavouriteDevices();
   } catch (error) {
     console.error(error);
   }
