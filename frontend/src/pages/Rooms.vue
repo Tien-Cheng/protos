@@ -5,7 +5,7 @@ import { useRoomsStore } from "../stores/rooms";
 import { useDevicesStore } from "../stores/devices";
 import { useWeatherStore } from "../stores/weather";
 
-import { Environment, Weather } from "../models";
+import { Environment, Weather, DeviceStatus } from "../models";
 
 import AppBar from '../components/AppBar.vue';
 import SectionCard from "../components/SectionCard.vue";
@@ -27,7 +27,15 @@ const rooms = computed(() => Object.values(roomsStore.rooms));
 
 const currentRoom = computed(() => rooms.value[state.roomIndex]);
 
+const hub = computed(() => devicesStore.hubDeviceByRoomId(currentRoom.value.roomId));
+
 const devices = computed(() => devicesStore.devicesByRoomId(currentRoom.value.roomId));
+
+
+
+const changeState = (deviceId: string, state: DeviceStatus) => {
+  devicesStore.updateState(deviceId, state);
+}
 
 
 
@@ -45,17 +53,15 @@ const main = async () => {
 
   try {
     await devicesStore.getDevicesByRoom(rooms.value[0].roomId);
+
+    if (hub.value == null) {
+      return;
+    }
+    state.insideEnvironment = {
+      temperature: hub.value.temperature,
+      humidity: hub.value.humidity
+    };
   } catch (error) {
-    console.error(error);
-  }
-
-  try {
-    const data = await fetch("https://api.data.gov.sg/v1/environment/air-temperature", {
-      mode: "cors"
-    })
-
-    console.log(await data.json());
-  } catch(error) {
     console.error(error);
   }
 };
@@ -125,7 +131,7 @@ main();
         <h2>Devices</h2>
 
         <div class="device-wrap">
-          <DeviceCard v-for="device in devices" :key="device.deviceId" :device-id="device.deviceId" :name="device.deviceName" :type="device.deviceType as any" :status="device.state"></DeviceCard>
+          <DeviceCard v-for="device in devices" :key="device.deviceId" :device-id="device.deviceId" :name="device.deviceName" :type="device.deviceType as any" :status="device.state" @update="(value) => changeState(device.deviceId, value)"></DeviceCard>
         </div>
       </section> 
     </div>
