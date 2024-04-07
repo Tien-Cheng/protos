@@ -12,7 +12,7 @@ import AppBar from '../components/AppBar.vue';
 import SectionCard from '../components/SectionCard.vue';
 import DeviceCard from '../components/DeviceCard.vue';
 
-import { Suggestion } from '../models';
+import { DeviceStatus, Suggestion } from '../models';
 
 
 const suggestionsStore = useSuggestionsStore();
@@ -36,6 +36,12 @@ const devices = computed(() => devicesStore.favouriteDevices);
 
 
 const suggestions = ref({} as { [key: string]: Suggestion });
+
+
+
+const changeState = (deviceId: string, state: DeviceStatus) => {
+  devicesStore.updateState(deviceId, state);
+}
 
 
 
@@ -130,7 +136,7 @@ pointsStore.getPoints().then(() => {
     </SectionCard>
     <h2 class="section-title">Devices</h2>
     <div class="device-wrap">
-      <DeviceCard v-for="device in devices" :key="device.deviceId" :device-id="device.deviceId" :name="device.deviceName" :status="device.state" :type="device.deviceType" />
+      <DeviceCard v-for="device in devices" :key="device.deviceId" :device-id="device.deviceId" :name="device.deviceName" :status="device.state" :type="device.deviceType" @update="(value) => changeState(device.deviceId, value)" />
     </div>
   </div>
   <AppBar />

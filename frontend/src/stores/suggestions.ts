@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 
-import { collection, doc, getDocs, deleteDoc } from "firebase/firestore";
+import { collection, doc, getDocs, deleteDoc, query, where } from "firebase/firestore";
 
 import { db } from "../firebase";
 import { Suggestion } from "../models";
@@ -10,6 +10,11 @@ export const useSuggestionsStore = defineStore("suggestions", {
   state: (): { suggestions: { [id: string]: Suggestion } } => ({
     suggestions: {},
   }),
+  getters: {
+    suggestionsByDeviceId: (state) => (deviceId: string) => {
+      return Object.values(state.suggestions).filter((suggestion) => suggestion.deviceId === deviceId);
+    },
+  },
   actions: {
     async getAllSuggestions() {
       try {
@@ -22,6 +27,19 @@ export const useSuggestionsStore = defineStore("suggestions", {
           this.suggestions[snapDoc.id] = suggestion;
         });
         return this.suggestions;
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    async getSuggestionsByDeviceId(deviceId: string) {
+      try {
+        const snap = await getDocs(query(collection(db, "Suggestions"), where("deviceId", "==", deviceId)));
+
+        snap.forEach((doc) => {
+          const suggestion = doc.data() as Suggestion;
+          suggestion.suggestionId = doc.id;
+          this.suggestions[doc.id] = suggestion;
+        });
       } catch (error) {
         console.error(error);
       }

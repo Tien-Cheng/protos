@@ -5,7 +5,7 @@ import { useRoomsStore } from "../stores/rooms";
 import { useDevicesStore } from "../stores/devices";
 import { useWeatherStore } from "../stores/weather";
 
-import { Environment, Weather } from "../models";
+import { Environment, Weather, DeviceStatus } from "../models";
 
 import AppBar from '../components/AppBar.vue';
 import SectionCard from "../components/SectionCard.vue";
@@ -28,6 +28,12 @@ const rooms = computed(() => Object.values(roomsStore.rooms));
 const currentRoom = computed(() => rooms.value[state.roomIndex]);
 
 const devices = computed(() => devicesStore.devicesByRoomId(currentRoom.value.roomId));
+
+
+
+const changeState = (deviceId: string, state: DeviceStatus) => {
+  devicesStore.updateState(deviceId, state);
+}
 
 
 
@@ -125,7 +131,7 @@ main();
         <h2>Devices</h2>
 
         <div class="device-wrap">
-          <DeviceCard v-for="device in devices" :key="device.deviceId" :device-id="device.deviceId" :name="device.deviceName" :type="device.deviceType as any" :status="device.state"></DeviceCard>
+          <DeviceCard v-for="device in devices" :key="device.deviceId" :device-id="device.deviceId" :name="device.deviceName" :type="device.deviceType as any" :status="device.state" @update="(value) => changeState(device.deviceId, value)"></DeviceCard>
         </div>
       </section> 
     </div>
