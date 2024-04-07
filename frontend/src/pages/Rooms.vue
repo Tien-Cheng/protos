@@ -37,18 +37,24 @@ const changeState = (deviceId: string, state: DeviceStatus) => {
   devicesStore.updateState(deviceId, state);
 }
 
-const updateRoom = (index: number) => {
+const updateRoom = async (index: number) => {
   state.roomIndex = index;
 
-  if (hub.value == null) {
-    state.insideEnvironment = null;
-    return;
-  }
+  try {
+    await devicesStore.getDevicesByRoom(rooms.value[index].roomId);
 
-  state.insideEnvironment = {
-    temperature: hub.value.temperature,
-    humidity: hub.value.humidity
-  };
+    if (hub.value == null) {
+      state.insideEnvironment = null;
+      return;
+    }
+
+    state.insideEnvironment = {
+      temperature: hub.value.temperature,
+      humidity: hub.value.humidity
+    };
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 
@@ -65,19 +71,7 @@ const main = async () => {
     return;
   }
 
-  try {
-    await devicesStore.getDevicesByRoom(rooms.value[0].roomId);
-
-    if (hub.value == null) {
-      return;
-    }
-    state.insideEnvironment = {
-      temperature: hub.value.temperature,
-      humidity: hub.value.humidity
-    };
-  } catch (error) {
-    console.error(error);
-  }
+  await updateRoom(0);
 };
 
 main();
