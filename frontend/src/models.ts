@@ -14,6 +14,12 @@ export enum DeviceStatus {
   ERROR = "ERROR",
 }
 
+export enum SuggestionMethod {
+  STATE = "STATE",
+  // TEMPERATURE = "TEMPERATURE",
+  // SPEED = "SPEED",
+}
+
 export interface Device {
   deviceId: string;
   deviceName: string;
@@ -49,4 +55,14 @@ export interface Voucher {
   voucherDescription?: string,
   imageURL?: string,
   requiredPoints: number,
+}
+
+export interface Suggestion {
+  suggestionId: string,
+  suggestionName: string,
+  suggestionDescription: string,
+  // suggestionType: "state-change" | "setting-change",
+  deviceId: string,
+  deviceState: DeviceStatus,
+  // deviceStateMethod: SuggestionMethod,
 }

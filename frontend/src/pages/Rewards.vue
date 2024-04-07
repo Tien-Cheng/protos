@@ -6,30 +6,33 @@ import { Voucher } from '../models';
 
 import AppBar from '../components/AppBar.vue';
 import SectionCard from '../components/SectionCard.vue';
+import { usePointsStore } from '../stores/points';
 
 
 const vouchersStore = useVouchersStore();
+const pointsStore = usePointsStore();
 
-const data = ref({
-  score: 250,
-});
+const points = ref(0);
 
 const vouchers = ref({} as { [id: string]: Voucher });
 
 // vouchersStore.addVouchers().then(() => 
 function getVouchers() {
-  vouchersStore.getAvailableVouchers(data.value.score).then(v => {
+  vouchersStore.getAvailableVouchers(points.value).then(v => {
     vouchers.value = v;
   });
 }
 
 function useVoucher(id: string, points: number) {
-  data.value.score -= points;
+  pointsStore.changePoints(points);
   vouchersStore.removeVoucher(id).then(() => getVouchers());
 }
-// );
 
 getVouchers();
+
+pointsStore.getPoints().then(() => {
+  points.value = pointsStore.points;
+});
 
 </script>
 
@@ -44,7 +47,7 @@ getVouchers();
           <b>Total Score</b>
         </h3>
         <h1 class="score">
-          {{ data.score }}
+          {{ points }}
           <h4 class="score-unit">points</h4>
         </h1>
         <p>
@@ -64,15 +67,15 @@ getVouchers();
       </div>
     </SectionCard>
     <h2 class="section-title">Vouchers</h2>
-    <SectionCard v-for="(value, key) in vouchers" :key="key" class="voucher-card">
+    <SectionCard v-for="(voucher, key) in vouchers" :key="key" class="voucher-card">
       <div class="voucher-image">
-        <img :src="value.imageURL">
+        <img :src="voucher.imageURL">
       </div>
       <div class="voucher-content">
-        <h2>{{ value.voucherName }}</h2>
-        <h4 class="voucher-description">{{ value.voucherDescription }}</h4>
-        <button type="button" :onClick="() => useVoucher(key.toString(), value.requiredPoints)" class="voucher-button">
-          <h3>{{ value.requiredPoints }} points</h3>
+        <h2>{{ voucher.voucherName }}</h2>
+        <h4 class="voucher-description">{{ voucher.voucherDescription }}</h4>
+        <button type="button" :onClick="() => useVoucher(key.toString(), voucher.requiredPoints)" class="voucher-button">
+          <h3>{{ voucher.requiredPoints }} points</h3>
         </button>
       </div>
     </SectionCard>

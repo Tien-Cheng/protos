@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 
-import { collection, getDocs, setDoc, doc, deleteDoc } from "firebase/firestore";
+import { collection, getDocs, doc, deleteDoc } from "firebase/firestore";
 
 import { db } from "../firebase";
 import { Voucher } from "../models";

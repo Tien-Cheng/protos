@@ -1,10 +1,10 @@
 import { defineStore } from "pinia";
 
-import { collection, query, where, getDocs } from "firebase/firestore";
+import { collection, query, where, getDocs, doc, setDoc } from "firebase/firestore";
 
 import { db } from "../firebase";
 
-import { Device } from "../models";
+import { Device, DeviceStatus } from "../models";
 
 
 
@@ -55,6 +55,15 @@ export const useDevicesStore = defineStore("devices", {
 
       } catch (error) {
         console.error(error);
+      }
+    },
+    async updateState(id: string, status: DeviceStatus) {
+      this.devices[id].state = status;
+      try {
+
+        setDoc(doc(collection(db, "Devices"), id), this.devices[id]);
+      } catch (e) {
+        console.error(e);
       }
     },
   }
