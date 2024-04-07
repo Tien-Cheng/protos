@@ -180,6 +180,7 @@ main();
 
   height: 55px;
   padding: 8px 13px;
+  width: calc(100% + 16px);
 }
 
 .chip-array .chip {
@@ -187,8 +188,11 @@ main();
   margin-right: 10px;
   cursor: pointer;
 
-  padding: 10px 13px;
-  color: white;
+  padding: 10px 13px 8px;
+  color: black;
+
+  display: flex;
+  align-items: center;
 }
 
 .chip-array .chip h4 {
@@ -247,6 +251,7 @@ main();
 
 .chip-array .chip.chip-selected {
   background-color: var(--primary);
+  color: white;
 }
 
 .device-wrap {
