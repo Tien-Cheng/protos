@@ -28,6 +28,7 @@ server.register(autoload, {
 
 server.listen({
     port: 4090,
+    host: "0.0.0.0",
 },
 
     (err, address) => {

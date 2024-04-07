@@ -1,6 +1,6 @@
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 import { Timestamp } from "firebase-admin/firestore";
-import { DeviceType } from "types";
+import { DeviceType } from "../../../types";
 
 const main: FastifyPluginAsyncTypebox = async (app, options): Promise<void> => {
   app.get("/", {}, async (req, res) => {
