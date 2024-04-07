@@ -35,7 +35,7 @@ const devices = computed(() => devicesStore.favouriteDevices);
 
 
 
-const suggestions = ref({} as { [key: string]: Suggestion });
+const suggestions = computed(() => suggestionsStore.suggestions);
 
 
 
@@ -65,12 +65,15 @@ const main = async () => {
   } catch (error) {
     console.error(error);
   }
+
+  try {
+    await suggestionsStore.getAllSuggestions();
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 main();
-suggestionsStore.getAllSuggestions().then(s => {
-  suggestions.value = { ...s };
-});
 
 pointsStore.getPoints().then(() => {
   points.value = pointsStore.points;
@@ -229,9 +232,21 @@ pointsStore.getPoints().then(() => {
 }
 
 .suggestion-icon {
-  width: 45px;
-  height: 45px;
-  margin: 20px;
+  height: 100%;
+  width: 80px;
+  margin: 5px 15px 5px 5px;
+  display: flex;
+  align-items: center;
+}
+
+.suggestion-icon svg {
+  width: 100%;
+  height: 100%;
+  filter: var(--icon-neu);
+}
+
+.suggestion-icon path {
+  fill: var(--primary);
 }
 
 .suggestion-content {
@@ -243,6 +258,7 @@ pointsStore.getPoints().then(() => {
   margin: 5px 0 10px;
   opacity: .8;
 }
+
 
 .details-button,
 .suggestion-button {
@@ -263,6 +279,7 @@ pointsStore.getPoints().then(() => {
   filter: var(--secondary-neu);
   align-self: flex-end;
 }
+
 
 .device-wrap {
   display: grid;
