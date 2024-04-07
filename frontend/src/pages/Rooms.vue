@@ -37,6 +37,20 @@ const changeState = (deviceId: string, state: DeviceStatus) => {
   devicesStore.updateState(deviceId, state);
 }
 
+const updateRoom = (index: number) => {
+  state.roomIndex = index;
+
+  if (hub.value == null) {
+    state.insideEnvironment = null;
+    return;
+  }
+
+  state.insideEnvironment = {
+    temperature: hub.value.temperature,
+    humidity: hub.value.humidity
+  };
+}
+
 
 
 const main = async () => {
@@ -137,7 +151,7 @@ main();
     </div>
     <AppBar>
       <div class="chip-array">
-        <div class="chip" :class="{ 'chip-selected': state.roomIndex == i }" v-for="room, i in rooms" :id="room.roomId" @click="state.roomIndex = i">
+        <div class="chip" :class="{ 'chip-selected': state.roomIndex == i }" v-for="room, i in rooms" :id="room.roomId" @click="updateRoom(i)">
           <h4>
             {{ room.roomName }}
           </h4>
