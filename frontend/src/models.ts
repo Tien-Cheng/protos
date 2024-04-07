@@ -27,6 +27,13 @@ export interface Device {
   state: DeviceStatus;
 }
 
+export interface HubDevice extends Device {
+  temperature: number;
+  humidity: number;
+  lightOn: boolean;
+  humanPresence: boolean;
+}
+
 export interface Room {
   roomId: string;
   roomName: string;
