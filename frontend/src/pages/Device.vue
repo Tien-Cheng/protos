@@ -10,13 +10,13 @@ import SectionCard from '../components/SectionCard.vue';
 
 const devicesStore = useDevicesStore();
 
-const device = computed(() => devicesStore.deviceById(router.currentRoute.value.params.id as string ?? ""));
+const device = computed(() => devicesStore.deviceById(router.currentRoute.value.params.deviceId as string ?? ""));
 
 
 
 const main = () => {
   if (device.value == null) {
-    // router.push("/rooms");
+    router.push("/rooms");
   }
 }
 

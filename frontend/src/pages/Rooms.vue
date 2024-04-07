@@ -125,7 +125,7 @@ main();
         <h2>Devices</h2>
 
         <div class="device-wrap">
-          <DeviceCard v-for="device in devices" :key="device.deviceId" :name="device.deviceName" :type="device.deviceType as any" :status="device.state"></DeviceCard>
+          <DeviceCard v-for="device in devices" :key="device.deviceId" :device-id="device.deviceId" :name="device.deviceName" :type="device.deviceType as any" :status="device.state"></DeviceCard>
         </div>
       </section> 
     </div>

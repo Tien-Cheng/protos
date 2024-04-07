@@ -18,12 +18,28 @@ export const useDevicesStore = defineStore("devices", {
     },
     deviceById: (state) => (deviceId: string) => {
       return state.devices[deviceId];
+    },
+    favouriteDevices: (state) => {
+      return Object.values(state.devices).filter((device) => device.isFavourite);
     }
   },
   actions: {
     async getDevicesByRoom(roomId: string) {
       try {
         const snap = await getDocs(query(collection(db, "Devices"), where("roomId", "==", roomId)));
+
+        snap.forEach((doc) => {
+          const device = doc.data() as Device;
+          device.deviceId = doc.id;
+          this.devices[doc.id] = device;
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    async getFavouriteDevices() {
+      try {
+        const snap = await getDocs(query(collection(db, "Devices"), where("isFavourite", "==", true)));
 
         snap.forEach((doc) => {
           const device = doc.data() as Device;

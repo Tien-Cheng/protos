@@ -29,7 +29,7 @@ const router = createRouter({
       component: () => import("./pages/Rooms.vue")
     },
     {
-      path: "/rooms/device/:roomId",
+      path: "/rooms/device/:deviceId",
       name: Routes.DEVICE,
       component: () => import("./pages/Device.vue")
     },

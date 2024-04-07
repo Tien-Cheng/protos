@@ -1,16 +1,31 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
+
+import { Routes } from '../router';
+
+import { useRoomsStore } from '../stores/rooms';
+import { useDevicesStore } from '../stores/devices';
+
 import AppBar from '../components/AppBar.vue';
 import SectionCard from '../components/SectionCard.vue';
 import DeviceCard from '../components/DeviceCard.vue';
-import { Routes } from '../router';
 
 const score = ref(250);
 const data = ref({
   power: 100,
   cost: 500
 });
-const date = new Date();
+
+
+
+const roomsStore = useRoomsStore();
+const devicesStore = useDevicesStore();
+
+
+const rooms = computed(() => Object.values(roomsStore.rooms));
+const devices = computed(() => devicesStore.favouriteDevices);
+
+
 
 const suggestions = ref({
   "Turn Off Air Conditioner 1": {
@@ -19,12 +34,27 @@ const suggestions = ref({
   }
 } as { [key: string]: { description: string, button: string } });
 
-const devices = ref({
-  "Air Conditioner 1": { state: "inactive", type: 'smart-plug' },
-  "Air Conditioner 2": { state: "inactive", type: 'smart-meter' },
-  "Air Conditioner 3": { state: "inactive", type: 'smart-plug' },
-} as { [key: string]: { state: "active" | "inactive" | "disconnected" | "error", type: "smart-plug" | "smart-meter" } });
 
+
+const main = async () => {
+  try {
+    await roomsStore.getRooms();
+  } catch (error) {
+    console.error(error);
+  }
+
+  if (rooms.value.length == 0) {
+    return;
+  }
+
+  try {
+    await devicesStore.getDevicesByRoom(rooms.value[0].roomId);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+main();
 </script>
 
 <template>
@@ -55,7 +85,7 @@ const devices = ref({
             {{ data.power }}
             <h4 class="power-unit">kWh</h4>
           </h1>
-          <p>as of {{ date.toLocaleString('default', { day: 'numeric', month: 'long' }) }}</p>
+          <p>as of {{ new Date().toLocaleString('default', { day: 'numeric', month: 'long' }) }}</p>
         </div>
         <div class="power-icon">
           <svg width="65" height="65" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -90,7 +120,7 @@ const devices = ref({
     </SectionCard>
     <h2 class="section-title">Devices</h2>
     <div class="device-wrap">
-      <DeviceCard v-for="(value, key) in devices" :name="key.toString()" :status="value.state" :type="value.type" />
+      <DeviceCard v-for="device in devices" :key="device.deviceId" :device-id="device.deviceId" :name="device.deviceName" :status="device.state" :type="device.deviceType" />
     </div>
   </div>
   <AppBar />
