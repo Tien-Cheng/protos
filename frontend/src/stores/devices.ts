@@ -54,6 +54,19 @@ export const useDevicesStore = defineStore("devices", {
         console.error(error);
       }
     },
+    async getDevices() {
+      try {
+        const snap = await getDocs(collection(db, "Devices"));
+
+        snap.forEach((doc) => {
+          const device = doc.data() as Device;
+          device.deviceId = doc.id;
+          this.devices[doc.id] = device;
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    },
     // async getHubDeviceByRoom(roomId: string) {
     //   try {
     //     const snap = await getDocs(query(collection(db, "Devices"), and(where("roomId", "==", roomId), where("deviceType", "==", DeviceType.SmartHub))));
